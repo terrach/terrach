@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_main">Главная</string>
+    <string name="fragment_boards">Борды</string>
+    <string name="fragment_threads">Треды в </string>   
+</resources>

@@ -17,6 +17,7 @@ import flexjson.JSONDeserializer;
 public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThreadDTO> {
 	private String server, wakaba;
 	private ListView lvPosts;
+	private String board;
 
 	public ThreadLoadAsyncTask(Context a, ListView lvPosts) {
 		super(a);
@@ -34,7 +35,8 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 	@Override
 	protected SingleThreadDTO doInBackground(String... params) {
 		try {
-			URLConnection conn = new URL(server + params[0] + "/res/" + params[1] + ".json").openConnection();
+			board = params[0];
+			URLConnection conn = new URL(server + board + "/res/" + params[1] + ".json").openConnection();
 			return new JSONDeserializer<SingleThreadDTO>().deserialize(new InputStreamReader(conn.getInputStream(), "UTF-8"), SingleThreadDTO.class);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -49,7 +51,7 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 		if (result != null) {
 			PostsArrayAdapter adapter = (PostsArrayAdapter) lvPosts.getAdapter();
 			if (adapter == null)
-				lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread));
+				lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread, board));
 			else
 				adapter.update(result.thread);
 		}

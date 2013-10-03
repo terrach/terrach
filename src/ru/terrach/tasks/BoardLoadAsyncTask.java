@@ -13,11 +13,13 @@ import ru.terrach.network.dto.BoardDTO;
 import android.content.Context;
 import android.widget.ListView;
 import flexjson.JSONDeserializer;
+import flexjson.JSONException;
 
 public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 
 	private String server, wakaba;
 	private ListView lvThreads;
+	private String board;
 
 	public BoardLoadAsyncTask(Context a, ListView lvThreads) {
 		super(a);
@@ -33,11 +35,14 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 	@Override
 	protected BoardDTO doInBackground(String... params) {
 		try {
-			URLConnection conn = new URL(server + params[0] + wakaba).openConnection();
+			board = params[0];
+			URLConnection conn = new URL(server + board + wakaba).openConnection();
 			return new JSONDeserializer<BoardDTO>().deserialize(new InputStreamReader(conn.getInputStream(), "UTF-8"), BoardDTO.class);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -48,7 +53,7 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 		if (result != null) {
 			ThreadsArrayAdapter adapter = (ThreadsArrayAdapter) lvThreads.getAdapter();
 			if (adapter == null)
-				lvThreads.setAdapter(new ThreadsArrayAdapter(context, result.threads));
+				lvThreads.setAdapter(new ThreadsArrayAdapter(context, result.threads, board));
 			else
 				adapter.update(result.threads);
 		}

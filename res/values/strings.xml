@@ -9,4 +9,5 @@
     <string name="drawable_close">закрыть</string>
 	<string name="server">http://2ch.hk/</string>
 	<string name="wakaba">wakaba.json</string>
+	<string name="cache_dir">terrach</string>
 </resources>

@@ -7,7 +7,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@android:color/white" >
 
         <!-- The main content view -->
 
@@ -37,7 +38,8 @@
             android:id="@+id/elv_left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start" >
+            android:layout_gravity="start"
+            android:background="@android:color/white" >
         </ExpandableListView>
     </android.support.v4.widget.DrawerLayout>
 

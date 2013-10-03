@@ -4,6 +4,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,14 @@ import ru.terrach.fragment.MainFragment;
 import ru.terrach.fragment.PostsFragment;
 import ru.terrach.fragment.ThreadsFragment;
 import android.content.res.Configuration;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +53,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_main);
+
 		prepareDrawer();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 

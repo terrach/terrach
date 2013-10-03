@@ -30,7 +30,11 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="ru.terrach.NewPostActivity"
+            android:name="ru.terrach.activity.NewPostActivity"
+            android:label="@string/title_activity_new_post" >
+        </activity>
+        <activity
+            android:name="ru.terrach.activity.ThreadImagesGallery"
             android:label="@string/title_activity_new_post" >
         </activity>
     </application>

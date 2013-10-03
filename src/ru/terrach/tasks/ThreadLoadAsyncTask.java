@@ -59,8 +59,8 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 	protected void onPostExecute(SingleThreadDTO result) {
 		if (result != null) {
 			for (List<PostDTO> msgsInThread : result.thread)
-				if (msgsInThread.get(0).image != null)
-					pics.add(server + board + msgsInThread.get(0).image);
+				if (msgsInThread.get(0).thumbnail != null)
+					pics.add(server + board + msgsInThread.get(0).thumbnail);
 
 			PostsArrayAdapter adapter = (PostsArrayAdapter) lvPosts.getAdapter();
 			if (adapter == null)

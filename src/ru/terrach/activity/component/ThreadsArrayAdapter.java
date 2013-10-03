@@ -51,7 +51,7 @@ public class ThreadsArrayAdapter extends ArrayAdapter<ThreadDTO> {
 		vh.num.setText(firstPost.num.toString());
 		vh.msg.setText(Html.fromHtml(firstPost.comment));
 		if (firstPost.image != null)
-			imageLoader.DisplayImage(server + board + firstPost.image, vh.pic);
+			imageLoader.DisplayImage(server + board + firstPost.thumbnail, vh.pic);
 		return v;
 	}
 

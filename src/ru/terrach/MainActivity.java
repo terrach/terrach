@@ -1,10 +1,15 @@
 package ru.terrach;
 
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ru.terrach.activity.MainActivityInterface;
 import ru.terrach.activity.component.DrawerExpandableListAdapter;
+import ru.terrach.activity.component.PostHolder;
 import ru.terrach.fragment.BoardsFragment;
 import ru.terrach.fragment.MainFragment;
 import ru.terrach.fragment.PostsFragment;
@@ -20,16 +25,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
+import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements MainActivityInterface {
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ExpandableListView elvLeftDrawer;
 	private List<String> listDataHeader;
-	private HashMap<String, List<String>> listDataChild;
-	private List<String> posts = new ArrayList<String>();
+	private HashMap<String, List<PostHolder>> listDataChild;
+	private List<PostHolder> posts = new ArrayList<PostHolder>();
+	private Map<String, SoftReference<PostsFragment>> postFragments = new HashMap<String, SoftReference<PostsFragment>>();
+	private Map<String, SoftReference<ThreadsFragment>> threadFragments = new HashMap<String, SoftReference<ThreadsFragment>>();
+	private TextView tvCurrentFragment;
+	private DrawerExpandableListAdapter expAdapter;
 
 	private enum MainFragments {
 		MAIN, BOARDS, THREADS, POSTS;
@@ -43,10 +54,11 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawable_open, R.string.drawable_close);
-		mDrawerLayout.setDrawerListener(mDrawerToggle);		
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		elvLeftDrawer = (ExpandableListView) findViewById(R.id.elv_left_drawer);
-		elvLeftDrawer.setAdapter(new DrawerExpandableListAdapter(this, listDataHeader, listDataChild));
+		expAdapter = new DrawerExpandableListAdapter(this, listDataHeader, listDataChild);
+		elvLeftDrawer.setAdapter(expAdapter);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -55,33 +67,38 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-				return false;
+				changeFragment(MainFragments.POSTS, ((PostHolder) v.getTag()).board, ((PostHolder) v.getTag()).post);
+				mDrawerLayout.closeDrawers();
+				return true;
 			}
 		});
 		elvLeftDrawer.setOnGroupClickListener(new OnGroupClickListener() {
 
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
 				switch (groupPosition) {
 				case 0:
-					changeFragment(MainFragments.MAIN);
-					break;
+					changeFragment(MainFragments.MAIN, null, null);
+					mDrawerLayout.closeDrawers();
+					return true;
 				case 1:
-					changeFragment(MainFragments.BOARDS);
-					break;
+					changeFragment(MainFragments.BOARDS, null, null);
+					mDrawerLayout.closeDrawers();
+					return true;
 				case 2:
-					break;
+
 				case 3:
-					break;
+
 				}
-				return true;
+				return false;
 			}
 		});
-
-		changeFragment(MainFragments.MAIN);
+		tvCurrentFragment = (TextView) findViewById(R.id.tvCurrentFragment);
+		changeFragment(MainFragments.MAIN, null, null);
 	}
 
-	private void changeFragment(MainFragments fragment) {
+	private void changeFragment(MainFragments fragment, String board, String msg) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		switch (fragment) {
 		case BOARDS:
@@ -91,29 +108,46 @@ public class MainActivity extends ActionBarActivity {
 			transaction.replace(R.id.fMain, new MainFragment()).commit();
 			break;
 		case POSTS:
-			transaction.replace(R.id.fMain, new PostsFragment()).commit();
+			SoftReference<PostsFragment> postFragmentReference = postFragments.get(msg);
+			if (postFragmentReference != null && postFragmentReference.get() != null) {
+				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();
+				postFragmentReference.get().reload();
+			} else {
+				PostsFragment pf = new PostsFragment();
+				postFragmentReference = new SoftReference<PostsFragment>(pf);
+				postFragments.put(msg, postFragmentReference);
+				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();
+				pf.loadPosts(board, msg);
+			}
+			tvCurrentFragment.setText(msg);
 			break;
 		case THREADS:
-			transaction.replace(R.id.fMain, new ThreadsFragment()).commit();
+			SoftReference<ThreadsFragment> targetFragment = threadFragments.get(msg);
+			if (targetFragment != null && targetFragment.get() != null) {
+				transaction.replace(R.id.fMain, targetFragment.get()).commit();
+			} else {
+				ThreadsFragment tf = new ThreadsFragment();
+				targetFragment = new SoftReference<ThreadsFragment>(tf);
+				threadFragments.put(board, targetFragment);
+				transaction.replace(R.id.fMain, targetFragment.get()).commit();
+				tf.loadThreads(board);
+			}
+			tvCurrentFragment.setText(board);
 			break;
 		}
 	}
 
 	private void prepareDrawer() {
 		listDataHeader = new ArrayList<String>();
-		listDataChild = new HashMap<String, List<String>>();
+		listDataChild = new HashMap<String, List<PostHolder>>();
 		listDataHeader.add(getString(R.string.fragment_main));
 		listDataHeader.add(getString(R.string.fragment_boards));
 		listDataHeader.add("Открытые посты");
-		posts.add("post1");
-		posts.add("post2");
-		posts.add("post3");
-		posts.add("post4");
-		listDataHeader.add("Настроки");
-		listDataChild.put(listDataHeader.get(0), new ArrayList<String>());
-		listDataChild.put(listDataHeader.get(1), new ArrayList<String>());
+		listDataHeader.add("Настройки");
+		listDataChild.put(listDataHeader.get(0), new ArrayList<PostHolder>());
+		listDataChild.put(listDataHeader.get(1), new ArrayList<PostHolder>());
 		listDataChild.put(listDataHeader.get(2), posts);
-		listDataChild.put(listDataHeader.get(3), new ArrayList<String>());
+		listDataChild.put(listDataHeader.get(3), new ArrayList<PostHolder>());
 	}
 
 	@Override
@@ -147,5 +181,22 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void loadBoard(String name) {
+		changeFragment(MainFragments.THREADS, name, null);
+		prepareDrawer();
+		expAdapter = new DrawerExpandableListAdapter(this, listDataHeader, listDataChild);
+		elvLeftDrawer.setAdapter(expAdapter);
+	}
+
+	@Override
+	public void loadThread(String board, String id) {
+		changeFragment(MainFragments.POSTS, board, id);
+		posts.add(new PostHolder(board, id));
+		prepareDrawer();
+		expAdapter = new DrawerExpandableListAdapter(this, listDataHeader, listDataChild);
+		elvLeftDrawer.setAdapter(expAdapter);
 	}
 }

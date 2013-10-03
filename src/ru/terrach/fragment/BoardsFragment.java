@@ -1,15 +1,20 @@
 package ru.terrach.fragment;
 
 import ru.terrach.R;
+import ru.terrach.activity.MainActivityInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class BoardsFragment extends Fragment {
+
+	private String[] boards = new String[] { "/b/", "/pr/" };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -19,8 +24,13 @@ public class BoardsFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		((ListView) getView().findViewById(R.id.lvBoards)).setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
-				new String[] { "/b/", "/pr/" }));
+		ListView lvBoards = ((ListView) getView().findViewById(R.id.lvBoards));
+		lvBoards.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,boards ));
+		lvBoards.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				((MainActivityInterface) getActivity()).loadBoard(boards[position]);
+			}
+		});
 	}
-
 }

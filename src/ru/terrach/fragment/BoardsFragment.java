@@ -19,13 +19,14 @@ public class BoardsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.f_boards, null);
+
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ListView lvBoards = ((ListView) getView().findViewById(R.id.lvBoards));
-		lvBoards.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,boards ));
+		lvBoards.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, boards));
 		lvBoards.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -33,4 +34,7 @@ public class BoardsFragment extends Fragment {
 			}
 		});
 	}
+
+
+
 }

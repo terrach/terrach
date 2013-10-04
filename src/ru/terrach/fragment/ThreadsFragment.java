@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,7 +39,6 @@ public class ThreadsFragment extends Fragment {
 		ListView lvThreads = (ListView) getView().findViewById(R.id.lvThreads);
 		new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);
 		lvThreads.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String num = ((PostViewHolder) view.getTag()).num.getText().toString();
@@ -45,4 +47,23 @@ public class ThreadsFragment extends Fragment {
 		});
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.m_board, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.mi_refresh) {
+			new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);	
+			return true;
+		} else
+			return super.onOptionsItemSelected(item);
+	}
 }

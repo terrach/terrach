@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import ru.terrach.R;
-import ru.terrach.activity.component.ThreadsArrayAdapter;
+import ru.terrach.activity.component.adapter.ThreadsArrayAdapter;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.network.dto.BoardDTO;
 import android.content.Context;

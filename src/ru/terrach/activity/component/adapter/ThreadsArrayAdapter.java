@@ -1,9 +1,10 @@
-package ru.terrach.activity.component;
+package ru.terrach.activity.component.adapter;
 
 import java.util.List;
 
 import lazylist.ImageLoader;
 import ru.terrach.R;
+import ru.terrach.activity.component.PostViewHolder;
 import ru.terrach.network.dto.PostDTO;
 import ru.terrach.network.dto.ThreadDTO;
 import android.content.Context;

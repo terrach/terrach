@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ru.terrach.R;
 import ru.terrach.activity.ThreadImagesGallery;
-import ru.terrach.activity.component.ThreadGalleryAdapter;
+import ru.terrach.activity.component.adapter.ThreadGalleryAdapter;
 import ru.terrach.tasks.ThreadLoadAsyncTask;
 import android.content.Intent;
 import android.os.Bundle;

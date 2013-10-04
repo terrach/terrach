@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.terrach.R;
-import ru.terrach.activity.component.PostsArrayAdapter;
+import ru.terrach.activity.component.adapter.PostsArrayAdapter;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.network.dto.PostDTO;
 import ru.terrach.network.dto.SingleThreadDTO;

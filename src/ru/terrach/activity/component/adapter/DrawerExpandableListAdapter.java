@@ -1,9 +1,10 @@
-package ru.terrach.activity.component;
+package ru.terrach.activity.component.adapter;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ru.terrach.R;
+import ru.terrach.activity.component.PostHolder;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import ru.terrach.activity.MainActivityInterface;
-import ru.terrach.activity.component.DrawerExpandableListAdapter;
 import ru.terrach.activity.component.PostHolder;
+import ru.terrach.activity.component.adapter.DrawerExpandableListAdapter;
+import ru.terrach.core.helper.RecentHelper;
 import ru.terrach.fragment.BoardsFragment;
 import ru.terrach.fragment.MainFragment;
 import ru.terrach.fragment.PostsFragment;
@@ -19,6 +20,7 @@ import android.content.res.Configuration;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -44,6 +46,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	private Map<String, SoftReference<ThreadsFragment>> threadFragments = new HashMap<String, SoftReference<ThreadsFragment>>();
 	private TextView tvCurrentFragment;
 	private DrawerExpandableListAdapter expAdapter;
+	private RecentHelper recentHelper;
 
 	private enum MainFragments {
 		MAIN, BOARDS, THREADS, POSTS;
@@ -55,6 +58,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		setContentView(R.layout.a_main);
 
 		prepareDrawer();
+		recentHelper = new RecentHelper(this, getPreferences(0));
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawable_open, R.string.drawable_close);
@@ -106,10 +110,14 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		switch (fragment) {
 		case BOARDS:
-			transaction.replace(R.id.fMain, new BoardsFragment()).commit();
+			transaction.replace(R.id.fMain, new BoardsFragment());
+			transaction.addToBackStack(null);
+			transaction.commit();
 			break;
 		case MAIN:
-			transaction.replace(R.id.fMain, new MainFragment()).commit();
+			transaction.replace(R.id.fMain, new MainFragment());
+			transaction.addToBackStack(null);
+			transaction.commit();
 			break;
 		case POSTS:
 			SoftReference<PostsFragment> postFragmentReference = postFragments.get(msg);
@@ -120,7 +128,10 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 				PostsFragment pf = new PostsFragment();
 				postFragmentReference = new SoftReference<PostsFragment>(pf);
 				postFragments.put(msg, postFragmentReference);
-				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();
+
+				transaction.replace(R.id.fMain, postFragmentReference.get());
+				transaction.addToBackStack(null);
+				transaction.commit();
 				pf.loadPosts(board, msg);
 			}
 			tvCurrentFragment.setText(msg);
@@ -133,7 +144,9 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 				ThreadsFragment tf = new ThreadsFragment();
 				targetFragment = new SoftReference<ThreadsFragment>(tf);
 				threadFragments.put(board, targetFragment);
-				transaction.replace(R.id.fMain, targetFragment.get()).commit();
+				transaction.replace(R.id.fMain, targetFragment.get());
+				transaction.addToBackStack(null);
+				transaction.commit();
 				tf.loadThreads(board);
 			}
 			tvCurrentFragment.setText(board);
@@ -196,11 +209,29 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	}
 
 	@Override
-	public void loadThread(String board, String id) {
-		changeFragment(MainFragments.POSTS, board, id);
-		posts.add(new PostHolder(board, id));
+	public void loadThread(String board, String thread) {
+		changeFragment(MainFragments.POSTS, board, thread);
+		posts.add(new PostHolder(board, thread));
+		recentHelper.addRecentBoard(board);
+		recentHelper.addRecentThread(thread);
 		prepareDrawer();
 		expAdapter = new DrawerExpandableListAdapter(this, listDataHeader, listDataChild);
 		elvLeftDrawer.setAdapter(expAdapter);
+	}
+
+	@Override
+	public void onBackPressed() {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+
+		// check to see if stack is empty
+		if (fm.getBackStackEntryCount() > 0) {
+			fm.popBackStack();
+			ft.commit();
+		} else {
+
+			super.onBackPressed();
+		}
+		return;
 	}
 }

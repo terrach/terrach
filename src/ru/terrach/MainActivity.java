@@ -45,9 +45,11 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	private List<PostHolder> posts = new ArrayList<PostHolder>();
 	private Map<String, SoftReference<PostsFragment>> postFragments = new HashMap<String, SoftReference<PostsFragment>>();
 	private Map<String, SoftReference<ThreadsFragment>> threadFragments = new HashMap<String, SoftReference<ThreadsFragment>>();
+	private SoftReference<PostsFragment> currentPostFragment;
 	private TextView tvCurrentFragment;
 	private DrawerExpandableListAdapter expAdapter;
 	private RecentHelper recentHelper;
+	private MainFragments currectFragment = MainFragments.MAIN;
 
 	private enum MainFragments {
 		MAIN, BOARDS, THREADS, POSTS;
@@ -98,7 +100,14 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 				case 2:
 
 				case 3:
-
+					return false;
+				case 4: {
+					if (currectFragment == MainFragments.POSTS && currentPostFragment != null && currentPostFragment.get() != null) {
+						currentPostFragment.get().reload();
+					}
+					mDrawerLayout.closeDrawers();
+					return true;
+				}
 				}
 				return false;
 			}
@@ -109,6 +118,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 
 	private void changeFragment(MainFragments fragment, String board, String msg) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		currectFragment = fragment;
 		switch (fragment) {
 		case BOARDS:
 			transaction.replace(R.id.fMain, new BoardsFragment());
@@ -125,15 +135,16 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 			if (postFragmentReference != null && postFragmentReference.get() != null) {
 				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();
 				postFragmentReference.get().reload();
+				currentPostFragment = new SoftReference<PostsFragment>(postFragmentReference.get());
 			} else {
 				PostsFragment pf = new PostsFragment();
 				postFragmentReference = new SoftReference<PostsFragment>(pf);
 				postFragments.put(msg, postFragmentReference);
-
 				transaction.replace(R.id.fMain, postFragmentReference.get());
 				transaction.addToBackStack(null);
 				transaction.commit();
 				pf.loadPosts(board, msg);
+				currentPostFragment = new SoftReference<PostsFragment>(pf);
 			}
 			tvCurrentFragment.setText(msg);
 			break;
@@ -162,10 +173,12 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		listDataHeader.add(getString(R.string.fragment_boards));
 		listDataHeader.add("Открытые посты");
 		listDataHeader.add("Настройки");
+		listDataHeader.add("Обновить");
 		listDataChild.put(listDataHeader.get(0), new ArrayList<PostHolder>());
 		listDataChild.put(listDataHeader.get(1), new ArrayList<PostHolder>());
 		listDataChild.put(listDataHeader.get(2), posts);
 		listDataChild.put(listDataHeader.get(3), new ArrayList<PostHolder>());
+		listDataChild.put(listDataHeader.get(4), new ArrayList<PostHolder>());
 	}
 
 	@Override

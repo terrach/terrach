@@ -46,8 +46,10 @@ public class PostsFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		new ThreadLoadAsyncTask(getActivity(), (ListView) getView().findViewById(R.id.lvPosts), pics, thumbs).execute(board, msg);
-		getView().findViewById(R.id.lvPosts).setFocusable(false);
+		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
+		new ThreadLoadAsyncTask(getActivity(), lvPosts, pics, thumbs).execute(board, msg);
+		lvPosts.setFocusable(false);
+
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -14,7 +14,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.sax.StartElementListener;
 
 public class Downloader {
 	public boolean isDownloadManagerAvailable(Context context) {

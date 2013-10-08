@@ -1,11 +1,9 @@
 package ru.terrach.activity;
 
 import ru.terrach.R;
-import ru.terrach.R.layout;
-import ru.terrach.R.menu;
 import ru.terrach.network.Downloader;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -33,7 +31,7 @@ public class PicViewActivity extends Activity {
 		});
 		webview.setWebViewClient(new HelloWebViewClient());
 		webview.getSettings().setLoadWithOverviewMode(true);
-		webview.getSettings().setUseWideViewPort(true);		
+		webview.getSettings().setUseWideViewPort(true);
 		url = getIntent().getStringExtra(PIC_URL);
 		webview.loadUrl(url);
 

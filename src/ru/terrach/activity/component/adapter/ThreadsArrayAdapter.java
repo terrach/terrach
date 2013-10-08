@@ -56,7 +56,7 @@ public class ThreadsArrayAdapter extends ArrayAdapter<ThreadDTO> {
 		final PostDTO firstPost = getItem(position).posts.get(0).get(0);
 		vh.date.setText(firstPost.date);
 		vh.num.setText(firstPost.num.toString());
-		vh.msg.setText(Html.fromHtml(firstPost.comment));		
+		vh.msg.setText(Html.fromHtml(firstPost.comment));
 		if (firstPost.image != null) {
 			imageLoader.DisplayImage(server + board + firstPost.thumbnail, vh.pic);
 			vh.pic.setOnClickListener(new OnClickListener() {

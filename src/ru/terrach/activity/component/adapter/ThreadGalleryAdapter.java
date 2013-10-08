@@ -5,8 +5,6 @@ import java.util.List;
 import lazylist.ImageLoader;
 import ru.terrach.R;
 import android.content.Context;
-import android.graphics.Point;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;

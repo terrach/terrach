@@ -1,10 +1,10 @@
 package ru.terrach.tasks;
 
-import android.content.Context;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.core.PostBean;
+import android.content.Context;
 
-public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean>  {
+public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 
 	public SendPostAsyncTask(Context a) {
 		super(a);
@@ -14,7 +14,7 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean>  
 	@Override
 	protected void onCancelled() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

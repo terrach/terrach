@@ -1,10 +1,8 @@
 package ru.terrach.activity;
 
 import ru.terrach.R;
-import ru.terrach.R.layout;
-import ru.terrach.R.menu;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class NewPostActivity extends Activity {

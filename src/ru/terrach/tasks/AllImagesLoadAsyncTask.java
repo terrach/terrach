@@ -1,7 +1,7 @@
 package ru.terrach.tasks;
 
-import android.content.Context;
 import ru.terrach.core.AsyncTaskEx;
+import android.content.Context;
 
 public class AllImagesLoadAsyncTask extends AsyncTaskEx<Integer, Integer, Integer> {
 
@@ -13,7 +13,7 @@ public class AllImagesLoadAsyncTask extends AsyncTaskEx<Integer, Integer, Intege
 	@Override
 	protected void onCancelled() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

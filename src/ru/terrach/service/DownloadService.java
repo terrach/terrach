@@ -13,8 +13,6 @@ import ru.terrach.activity.PicViewActivity;
 import ru.terrach.core.helper.NotificationHelper;
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
 
 public class DownloadService extends IntentService {
 

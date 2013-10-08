@@ -51,11 +51,12 @@ public class PostsArrayAdapter extends ArrayAdapter<List<PostDTO>> {
 		vh.msg.setText(Html.fromHtml(getItem(position).get(0).comment));
 		if (getItem(position).get(0).image != null) {
 			imageLoader.DisplayImage(server + board + getItem(position).get(0).thumbnail, vh.pic);
-			vh.pic.setOnClickListener(new OnClickListener() {				
+			vh.pic.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					getContext().startActivity(
-							new Intent(getContext(), PicViewActivity.class).putExtra(PicViewActivity.PIC_URL, server + board + getItem(position).get(0).image));
+							new Intent(getContext(), PicViewActivity.class).putExtra(PicViewActivity.PIC_URL,
+									server + board + getItem(position).get(0).image));
 				}
 			});
 		}

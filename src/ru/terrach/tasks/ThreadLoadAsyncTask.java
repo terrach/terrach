@@ -70,7 +70,7 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 			if (adapter == null)
 				lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread, board));
 			else
-				adapter.update(result.thread);			
+				adapter.update(result.thread);
 		}
 	}
 

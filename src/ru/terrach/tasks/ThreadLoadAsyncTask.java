@@ -23,11 +23,13 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 	private ListView lvPosts;
 	private String board;
 	private ArrayList<String> pics;
+	private ArrayList<String> thumbs;
 
-	public ThreadLoadAsyncTask(Context a, ListView lvPosts, ArrayList<String> pics) {
+	public ThreadLoadAsyncTask(Context a, ListView lvPosts, ArrayList<String> pics, ArrayList<String> thumbs) {
 		super(a);
 		this.lvPosts = lvPosts;
 		this.pics = pics;
+		this.thumbs = thumbs;
 		server = a.getString(R.string.server);
 		wakaba = a.getString(R.string.wakaba);
 	}
@@ -58,15 +60,17 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 	@Override
 	protected void onPostExecute(SingleThreadDTO result) {
 		if (result != null) {
-			for (List<PostDTO> msgsInThread : result.thread)
-				if (msgsInThread.get(0).thumbnail != null)
-					pics.add(server + board + msgsInThread.get(0).thumbnail);
-
+			for (List<PostDTO> msgsInThread : result.thread) {
+				if (msgsInThread.get(0).image != null) {
+					pics.add(server + board + msgsInThread.get(0).image);
+					thumbs.add(server + board + msgsInThread.get(0).thumbnail);
+				}
+			}
 			PostsArrayAdapter adapter = (PostsArrayAdapter) lvPosts.getAdapter();
 			if (adapter == null)
 				lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread, board));
 			else
-				adapter.update(result.thread);
+				adapter.update(result.thread);			
 		}
 	}
 

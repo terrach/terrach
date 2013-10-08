@@ -30,7 +30,7 @@ public class ImageLoader {
 
 	public ImageLoader(Context context) {
 		fileCache = new ImagesFileCache(context);
-		executorService = Executors.newFixedThreadPool(5);
+		executorService = Executors.newFixedThreadPool(1);
 		httpReqHelper = new HttpRequestHelper(context);
 	}
 

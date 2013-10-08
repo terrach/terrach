@@ -6,7 +6,6 @@ import ru.terrach.activity.component.PostViewHolder;
 import ru.terrach.tasks.BoardLoadAsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,9 +27,7 @@ public class ThreadsFragment extends Fragment {
 	}
 
 	public void loadThreads(String board) {
-
 		this.board = board;
-
 	}
 
 	@Override
@@ -61,7 +58,7 @@ public class ThreadsFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.mi_refresh) {
-			new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);	
+			new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);
 			return true;
 		} else
 			return super.onOptionsItemSelected(item);

@@ -53,4 +53,21 @@
         android:orientation="horizontal" >
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvThreadPics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvPostMessage"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/tvThreadPosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvPostMessage"
+        android:layout_below="@+id/tvPostMessage"
+        
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>

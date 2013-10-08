@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -233,5 +234,9 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 			super.onBackPressed();
 		}
 		return;
+	}
+
+	public void openBoard(View v) {
+		loadBoard("/" + ((EditText) findViewById(R.id.etBoard)).getText().toString() + "/");
 	}
 }

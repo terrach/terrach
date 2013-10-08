@@ -4,12 +4,15 @@ import java.util.List;
 
 import lazylist.ImageLoader;
 import ru.terrach.R;
+import ru.terrach.activity.PicViewActivity;
 import ru.terrach.activity.component.PostViewHolder;
 import ru.terrach.network.dto.PostDTO;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -28,7 +31,7 @@ public class PostsArrayAdapter extends ArrayAdapter<List<PostDTO>> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = null;
 		// if (convertView == null)
 		v = LayoutInflater.from(getContext()).inflate(R.layout.i_thread_item, null);
@@ -46,8 +49,16 @@ public class PostsArrayAdapter extends ArrayAdapter<List<PostDTO>> {
 		vh.date.setText(getItem(position).get(0).date);
 		vh.num.setText(getItem(position).get(0).num.toString());
 		vh.msg.setText(Html.fromHtml(getItem(position).get(0).comment));
-		if (getItem(position).get(0).image != null)
-			imageLoader.DisplayImage(server + board + getItem(position).get(0).image, vh.pic);
+		if (getItem(position).get(0).image != null) {
+			imageLoader.DisplayImage(server + board + getItem(position).get(0).thumbnail, vh.pic);
+			vh.pic.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					getContext().startActivity(
+							new Intent(getContext(), PicViewActivity.class).putExtra(PicViewActivity.PIC_URL, server + board + getItem(position).get(0).image));
+				}
+			});
+		}
 
 		return v;
 	}

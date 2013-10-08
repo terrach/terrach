@@ -19,9 +19,11 @@ import android.widget.ImageView;
 public class ThreadGalleryAdapter extends ArrayAdapter<String> {
 
 	private ImageLoader imageLoader;
+	private List<String> url;
 
-	public ThreadGalleryAdapter(Context context, List<String> objects) {
+	public ThreadGalleryAdapter(Context context, List<String> objects, List<String> url) {
 		super(context, R.layout.i_gallery_image, objects);
+		this.url = url;
 		imageLoader = new ImageLoader(context);
 	}
 
@@ -37,9 +39,10 @@ public class ThreadGalleryAdapter extends ArrayAdapter<String> {
 		} else {
 			picWidth = display.getWidth() / 3;
 		}
-		GridView.LayoutParams lp = new GridView.LayoutParams(picWidth, picWidth);		
+		GridView.LayoutParams lp = new GridView.LayoutParams(picWidth, picWidth);
 		iv.setLayoutParams(lp);
 		imageLoader.DisplayImage(getItem(position), iv);
+		iv.setTag(url.get(position));
 		return iv;
 	}
 }

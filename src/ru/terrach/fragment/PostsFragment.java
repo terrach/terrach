@@ -22,6 +22,7 @@ public class PostsFragment extends Fragment {
 	private String msg;
 	private Boolean reload = false;
 	private ArrayList<String> pics = new ArrayList<String>();
+	private ArrayList<String> thumbs = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class PostsFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		new ThreadLoadAsyncTask(getActivity(), (ListView) getView().findViewById(R.id.lvPosts), pics).execute(board, msg);
+		new ThreadLoadAsyncTask(getActivity(), (ListView) getView().findViewById(R.id.lvPosts), pics, thumbs).execute(board, msg);
+		getView().findViewById(R.id.lvPosts).setFocusable(false);
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -56,10 +58,9 @@ public class PostsFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.mi_post_gallery) {
-			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra("pics", pics));
+			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra("pics", pics).putExtra("thumbs", thumbs));
 			return true;
 		} else
 			return super.onOptionsItemSelected(item);
 	}
-
 }

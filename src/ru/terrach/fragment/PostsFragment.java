@@ -40,6 +40,8 @@ public class PostsFragment extends Fragment {
 	}
 
 	public void reload() {
+		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
+		new ThreadLoadAsyncTask(getActivity(), lvPosts, pics, thumbs).execute(board, msg);
 	}
 
 	@Override
@@ -60,6 +62,9 @@ public class PostsFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.mi_post_gallery) {
 			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra("pics", pics).putExtra("thumbs", thumbs));
+			return true;
+		} else if (item.getItemId() == R.id.mi_post_reload) {
+			reload();
 			return true;
 		} else
 			return super.onOptionsItemSelected(item);

@@ -96,13 +96,6 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 
 				case 3:
 					return false;
-				case 4: {
-					if (currectFragment == MainFragments.POSTS && currentPostFragment != null && currentPostFragment.get() != null) {
-						currentPostFragment.get().reload();
-					}
-					mDrawerLayout.closeDrawers();
-					return true;
-				}
 				}
 				return false;
 			}
@@ -128,8 +121,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		case POSTS:
 			SoftReference<PostsFragment> postFragmentReference = postFragments.get(msg);
 			if (postFragmentReference != null && postFragmentReference.get() != null) {
-				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();
-				postFragmentReference.get().reload();
+				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();				
 				currentPostFragment = new SoftReference<PostsFragment>(postFragmentReference.get());
 			} else {
 				PostsFragment pf = new PostsFragment();
@@ -168,12 +160,10 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		listDataHeader.add(getString(R.string.fragment_boards));
 		listDataHeader.add("Открытые посты");
 		listDataHeader.add("Настройки");
-		listDataHeader.add("Обновить");
 		listDataChild.put(listDataHeader.get(0), new ArrayList<PostHolder>());
 		listDataChild.put(listDataHeader.get(1), new ArrayList<PostHolder>());
 		listDataChild.put(listDataHeader.get(2), posts);
 		listDataChild.put(listDataHeader.get(3), new ArrayList<PostHolder>());
-		listDataChild.put(listDataHeader.get(4), new ArrayList<PostHolder>());
 	}
 
 	@Override

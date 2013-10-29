@@ -20,4 +20,9 @@ public class Utils {
 			Log.w("Utils", "Error while copy stream: " + ex.getMessage());
 		}
 	}
+	
+	public static String convertStreamToString(InputStream is) {
+		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
+	}
 }

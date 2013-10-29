@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 public abstract class AsyncTaskEx<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 	private TimerTask tt;
 	protected Context context;
+	protected Exception exception;
 
 	public AsyncTaskEx(Context a) {
 		this(Constants.MAX_WORK_TIME, a);

@@ -35,16 +35,16 @@ public class Downloader {
 	public void download(Context context, String url) {
 		if (isDownloadManagerAvailable(context)) {
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-			request.setTitle("Download pic");
+			request.setTitle(url.substring(url.lastIndexOf("/")));
 			// in order for this if to run, you must use the android 3.2 to
 			// compile your app
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				request.allowScanningByMediaScanner();
-				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			}
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
 					context.getString(R.string.cache_dir) + url.substring(url.lastIndexOf("/")));
-
+			
 			// get download service and enqueue file
 			DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(request);

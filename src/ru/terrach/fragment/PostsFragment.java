@@ -3,7 +3,9 @@ package ru.terrach.fragment;
 import java.util.ArrayList;
 
 import ru.terrach.R;
+import ru.terrach.activity.NewPostActivity;
 import ru.terrach.activity.ThreadImagesGallery;
+import ru.terrach.core.WorkIsDoneListener;
 import ru.terrach.tasks.ThreadLoadAsyncTask;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class PostsFragment extends Fragment {
+public class PostsFragment extends Fragment implements WorkIsDoneListener {
 	private String board;
 	private String msg;
 	private Boolean reload = false;
@@ -41,14 +43,16 @@ public class PostsFragment extends Fragment {
 
 	public void reload() {
 		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
-		new ThreadLoadAsyncTask(getActivity(), lvPosts, pics, thumbs).execute(board, msg);
+		pics.clear();
+		thumbs.clear();
+		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, msg);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
-		new ThreadLoadAsyncTask(getActivity(), lvPosts, pics, thumbs).execute(board, msg);
+		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, msg);
 		lvPosts.setFocusable(false);
 
 	}
@@ -60,13 +64,30 @@ public class PostsFragment extends Fragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.mi_post_gallery) {
+		switch (item.getItemId()) {
+		case R.id.mi_post_gallery: {
 			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra("pics", pics).putExtra("thumbs", thumbs));
 			return true;
-		} else if (item.getItemId() == R.id.mi_post_reload) {
+		}
+		case R.id.mi_post_reload: {
 			reload();
 			return true;
-		} else
+		}
+		case R.id.mi_post_send: {
+			startActivityForResult(new Intent(getActivity(), NewPostActivity.class), 100);
+		}
+		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void done(String... params) {
+
+	}
+
+	@Override
+	public void exception(Exception e) {
+		getFragmentManager().popBackStackImmediate();
 	}
 }

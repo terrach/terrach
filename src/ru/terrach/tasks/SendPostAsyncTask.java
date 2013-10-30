@@ -2,8 +2,6 @@ package ru.terrach.tasks;
 
 import java.nio.charset.Charset;
 
-import lazylist.Utils;
-
 import org.acra.ACRA;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +18,7 @@ import ru.terrach.R;
 import ru.terrach.constants.Constants;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.core.PostBean;
+import ru.terrach.core.Utils;
 import android.content.Context;
 import android.text.TextUtils;
 

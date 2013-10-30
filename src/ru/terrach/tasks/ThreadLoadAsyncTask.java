@@ -10,10 +10,10 @@ import java.util.List;
 
 import org.acra.ACRA;
 
-import lazylist.Utils;
 import ru.terrach.R;
 import ru.terrach.activity.component.adapter.PostsArrayAdapter;
 import ru.terrach.core.AsyncTaskEx;
+import ru.terrach.core.Utils;
 import ru.terrach.core.WorkIsDoneListener;
 import ru.terrach.network.dto.PostDTO;
 import ru.terrach.network.dto.SingleThreadDTO;
@@ -45,8 +45,6 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 
 	@Override
 	protected void onCancelled() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

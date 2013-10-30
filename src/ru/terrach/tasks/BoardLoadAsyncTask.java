@@ -1,18 +1,17 @@
 package ru.terrach.tasks;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 import org.acra.ACRA;
 
-import lazylist.Utils;
 import ru.terrach.R;
 import ru.terrach.activity.component.adapter.ThreadsArrayAdapter;
 import ru.terrach.core.AsyncTaskEx;
+import ru.terrach.core.BoardCache;
+import ru.terrach.core.Utils;
 import ru.terrach.network.dto.BoardDTO;
 import android.content.Context;
 import android.util.Log;
@@ -26,10 +25,12 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 	private String server, wakaba;
 	private ListView lvThreads;
 	private String board;
+	private Boolean forceUpdate;
 
-	public BoardLoadAsyncTask(Context a, ListView lvThreads) {
+	public BoardLoadAsyncTask(Context a, ListView lvThreads, Boolean forceUpdate) {
 		super(a);
 		this.lvThreads = lvThreads;
+		this.forceUpdate = forceUpdate;
 		server = a.getString(R.string.server);
 		wakaba = a.getString(R.string.wakaba);
 	}
@@ -64,8 +65,14 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 	}
 
 	private BoardDTO load(String board) throws MalformedURLException, IOException, JSONException {
+		if (BoardCache.getInstance().isInCache(context, board) && !forceUpdate) {
+			String json = BoardCache.getInstance().getFromCache(context, board);
+			if (json != null)
+				return new JSONDeserializer<BoardDTO>().deserialize(json, BoardDTO.class);			
+		}
 		URLConnection conn = new URL(server + board + wakaba).openConnection();
 		String json = Utils.convertStreamToString(conn.getInputStream());
+		BoardCache.getInstance().addToCahce(context, board, json);
 		Log.i("boardjson", json);
 		return new JSONDeserializer<BoardDTO>().deserialize(json, BoardDTO.class);
 	}

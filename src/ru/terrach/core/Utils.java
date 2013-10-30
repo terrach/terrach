@@ -1,4 +1,4 @@
-package lazylist;
+package ru.terrach.core;
 
 import java.io.InputStream;
 import java.io.OutputStream;

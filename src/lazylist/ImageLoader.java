@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ru.terrach.R;
+import ru.terrach.core.FileCache;
 import ru.terrach.network.HttpRequestHelper;
 import android.app.Activity;
 import android.content.Context;
@@ -23,13 +24,13 @@ import android.widget.ImageView;
 public class ImageLoader {
 
 	ImagesMemoryCache memoryCache = new ImagesMemoryCache();
-	ImagesFileCache fileCache;
+	FileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService executorService;
 	HttpRequestHelper httpReqHelper;
 
 	public ImageLoader(Context context) {
-		fileCache = new ImagesFileCache(context);
+		fileCache = new FileCache(context);
 		executorService = Executors.newFixedThreadPool(1);
 		httpReqHelper = new HttpRequestHelper(context);
 	}

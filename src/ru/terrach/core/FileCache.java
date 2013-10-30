@@ -1,16 +1,15 @@
-package lazylist;
+package ru.terrach.core;
 
 import java.io.File;
 
 import ru.terrach.R;
 import android.content.Context;
 
-public class ImagesFileCache {
+public class FileCache {
 
 	private File cacheDir;
 
-	public ImagesFileCache(Context context) {
-		// Find the dir to save cached images
+	public FileCache(Context context) {
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
 			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), context.getString(R.string.cache_dir));
 		else

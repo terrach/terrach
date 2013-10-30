@@ -34,7 +34,7 @@ public class ThreadsFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ListView lvThreads = (ListView) getView().findViewById(R.id.lvThreads);
-		new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);
+		new BoardLoadAsyncTask(getActivity(), lvThreads, false).execute(board);
 		lvThreads.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,7 +58,7 @@ public class ThreadsFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.mi_refresh) {
-			new BoardLoadAsyncTask(getActivity(), lvThreads).execute(board);
+			new BoardLoadAsyncTask(getActivity(), lvThreads, true).execute(board);
 			return true;
 		} else
 			return super.onOptionsItemSelected(item);

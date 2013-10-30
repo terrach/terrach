@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/mi_newpost_send"
-        android:showAsAction="ifRoom|always|withText"
+        android:showAsAction="ifRoom|withText"
         android:icon="@drawable/ic_menu_send">
     </item>
 

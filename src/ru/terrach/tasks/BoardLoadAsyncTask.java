@@ -68,7 +68,7 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 		if (BoardCache.getInstance().isInCache(context, board) && !forceUpdate) {
 			String json = BoardCache.getInstance().getFromCache(context, board);
 			if (json != null)
-				return new JSONDeserializer<BoardDTO>().deserialize(json, BoardDTO.class);			
+				return new JSONDeserializer<BoardDTO>().deserialize(json, BoardDTO.class);
 		}
 		URLConnection conn = new URL(server + board + wakaba).openConnection();
 		String json = Utils.convertStreamToString(conn.getInputStream());
@@ -80,7 +80,8 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 	@Override
 	protected void onPostExecute(BoardDTO result) {
 		try {
-			if (result != null) {
+			if (result != null && lvThreads != null) {
+
 				ThreadsArrayAdapter adapter = (ThreadsArrayAdapter) lvThreads.getAdapter();
 				if (adapter == null)
 					lvThreads.setAdapter(new ThreadsArrayAdapter(context, result.threads, board));

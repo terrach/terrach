@@ -1,6 +1,5 @@
 package ru.terrach.activity.component.adapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import ru.terrach.network.dto.PostDTO;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

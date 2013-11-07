@@ -40,11 +40,11 @@ public class Downloader {
 			// compile your app
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				request.allowScanningByMediaScanner();
-				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
 			}
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-					context.getString(R.string.cache_dir) + url.substring(url.lastIndexOf("/")));
-			
+					context.getString(R.string.cache_dir) + url.substring(url.lastIndexOf("/") + 1));
+
 			// get download service and enqueue file
 			DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(request);

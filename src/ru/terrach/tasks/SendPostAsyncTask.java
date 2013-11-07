@@ -10,12 +10,10 @@ import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import ru.terrach.R;
-import ru.terrach.constants.Constants;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.core.PostBean;
 import ru.terrach.core.Utils;

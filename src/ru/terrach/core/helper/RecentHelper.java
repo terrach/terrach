@@ -38,9 +38,10 @@ public class RecentHelper {
 		SharedPreferences.Editor editor = preferences.edit();
 		StringBuilder sb = new StringBuilder();
 		if (recents.length < maxRecents) {
+			sb.append(recentParam);
+			sb.append(" ");
 			for (String r : recents)
 				sb.append(r).append(" ");
-			sb.append(recentParam);
 		} else {
 			sb.append(recentParam).append(" ");
 			for (int i = 1; i < maxRecents; i++)

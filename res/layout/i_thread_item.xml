@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/ivPostImage"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvPostMessage"
+        android:layout_margin="5dp"        
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -67,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvPostMessage"
         android:layout_below="@+id/tvPostMessage"
-        
+        android:layout_margin="5dp"        
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

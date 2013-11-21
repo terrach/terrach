@@ -44,7 +44,8 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	private TextView tvCurrentFragment;
 	private DrawerExpandableListAdapter expAdapter;
 	private RecentHelper recentHelper;
-	private MainFragments currectFragment = MainFragments.MAIN;
+	private MainFragments currentFragment = MainFragments.MAIN;
+	private View llPosts, llThreads;
 
 	private enum MainFragments {
 		MAIN, BOARDS, THREADS, POSTS;
@@ -65,6 +66,9 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		elvLeftDrawer = (ExpandableListView) findViewById(R.id.elv_left_drawer);
 		expAdapter = new DrawerExpandableListAdapter(this, listDataHeader, listDataChild);
 		elvLeftDrawer.setAdapter(expAdapter);
+
+		llPosts = findViewById(R.id.llPosts);
+		llThreads = findViewById(R.id.llThreads);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -106,28 +110,37 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 
 	private void changeFragment(MainFragments fragment, String board, String msg) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		currectFragment = fragment;
+		currentFragment = fragment;
 		switch (fragment) {
 		case BOARDS:
-			transaction.replace(R.id.fMain, new BoardsFragment());
+			transaction.replace(R.id.fMainThread, new BoardsFragment());
 			transaction.addToBackStack(null);
 			transaction.commit();
 			break;
 		case MAIN:
-			transaction.replace(R.id.fMain, new MainFragment());
+			if (llPosts.getVisibility() == View.GONE) {
+				transaction.replace(R.id.fMainThread, new MainFragment());
+			} else {
+				transaction.replace(R.id.fMainPosts, new MainFragment());
+				transaction.replace(R.id.fMainThread, new BoardsFragment());
+			}
 			transaction.addToBackStack(null);
 			transaction.commit();
 			break;
 		case POSTS:
+			if (llPosts.getVisibility() == View.GONE) {
+				llPosts.setVisibility(View.VISIBLE);
+				llThreads.setVisibility(View.GONE);
+			}
 			SoftReference<PostsFragment> postFragmentReference = postFragments.get(msg);
 			if (postFragmentReference != null && postFragmentReference.get() != null) {
-				transaction.replace(R.id.fMain, postFragmentReference.get()).commit();				
+				transaction.replace(R.id.fMainPosts, postFragmentReference.get()).commit();
 				currentPostFragment = new SoftReference<PostsFragment>(postFragmentReference.get());
 			} else {
 				PostsFragment pf = new PostsFragment();
 				postFragmentReference = new SoftReference<PostsFragment>(pf);
 				postFragments.put(msg, postFragmentReference);
-				transaction.replace(R.id.fMain, postFragmentReference.get());
+				transaction.replace(R.id.fMainPosts, postFragmentReference.get());
 				transaction.addToBackStack(null);
 				transaction.commit();
 				pf.loadPosts(board, msg);
@@ -138,12 +151,12 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		case THREADS:
 			SoftReference<ThreadsFragment> targetFragment = threadFragments.get(msg);
 			if (targetFragment != null && targetFragment.get() != null) {
-				transaction.replace(R.id.fMain, targetFragment.get()).commit();
+				transaction.replace(R.id.fMainThread, targetFragment.get()).commit();
 			} else {
 				ThreadsFragment tf = new ThreadsFragment();
 				targetFragment = new SoftReference<ThreadsFragment>(tf);
 				threadFragments.put(board, targetFragment);
-				transaction.replace(R.id.fMain, targetFragment.get());
+				transaction.replace(R.id.fMainThread, targetFragment.get());
 				transaction.addToBackStack(null);
 				transaction.commit();
 				tf.loadThreads(board);

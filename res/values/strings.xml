@@ -16,5 +16,6 @@
     <string name="recent_threads">recent_threads</string>
     <string name="title_activity_pic_view">PicViewActivity</string>
 	<string name="error_caught">Произошла ошибка, отчёт отправлен</string>
+	<string name="recent_posts">Недавние посты</string>
     
 </resources>

@@ -70,6 +70,8 @@ public class PostsArrayAdapter extends ArrayAdapter<List<PostDTO>> {
 									server + board + getItem(position).get(0).image));
 				}
 			});
+		} else {
+			vh.pic.setImageResource(R.drawable.no_photo);
 		}
 		if (replyes.containsKey(getItem(position).get(0).num)) {
 			LinearLayout ll = (LinearLayout) v.findViewById(R.id.llReplyes);

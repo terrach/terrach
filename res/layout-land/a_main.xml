@@ -19,8 +19,9 @@
 
             <LinearLayout
                 android:id="@+id/llThreads"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight=".5"
                 android:orientation="vertical" >
 
                 <TextView
@@ -41,10 +42,10 @@
 
             <LinearLayout
                 android:id="@+id/llPosts"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="gone" >
+                android:layout_weight=".5"
+                android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/tvCurrentFragment"

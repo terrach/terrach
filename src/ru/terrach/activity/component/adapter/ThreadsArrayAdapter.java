@@ -57,8 +57,8 @@ public class ThreadsArrayAdapter extends ArrayAdapter<ThreadDTO> {
 		vh.date.setText(firstPost.date);
 		vh.num.setText(firstPost.num.toString());
 		vh.msg.setText(Html.fromHtml(firstPost.comment));
-		vh.pics.setText(getItem(position).image_count.toString()+" пикчей");
-		vh.posts.setText(getItem(position).reply_count.toString()+" ответов");
+		vh.pics.setText(getItem(position).image_count.toString() + " пикчей");
+		vh.posts.setText(getItem(position).reply_count.toString() + " ответов");
 		if (firstPost.image != null) {
 			imageLoader.DisplayImage(server + board + firstPost.thumbnail, vh.pic);
 			vh.pic.setOnClickListener(new OnClickListener() {
@@ -68,6 +68,8 @@ public class ThreadsArrayAdapter extends ArrayAdapter<ThreadDTO> {
 							new Intent(getContext(), PicViewActivity.class).putExtra(PicViewActivity.PIC_URL, server + board + firstPost.image));
 				}
 			});
+		} else {
+			vh.pic.setImageResource(R.drawable.no_photo);
 		}
 
 		return v;

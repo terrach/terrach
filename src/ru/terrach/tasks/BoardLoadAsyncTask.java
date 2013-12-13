@@ -50,14 +50,11 @@ public class BoardLoadAsyncTask extends AsyncTaskEx<String, Integer, BoardDTO> {
 				success = true;
 				break;
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				ACRA.getErrorReporter().handleSilentException(e);
+				e.printStackTrace();				
 			} catch (IOException e) {
-				e.printStackTrace();
-				ACRA.getErrorReporter().handleSilentException(e);
+				e.printStackTrace();				
 			} catch (JSONException e) {
-				e.printStackTrace();
-				ACRA.getErrorReporter().handleSilentException(e);
+				e.printStackTrace();				
 			}
 
 		}

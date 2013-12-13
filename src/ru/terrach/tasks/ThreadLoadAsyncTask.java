@@ -61,18 +61,15 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 		} catch (MalformedURLException e) {
 			exception = e;
 			e.printStackTrace();
-			ACRA.getErrorReporter().handleSilentException(e);
 		} catch (IOException e) {
 			exception = e;
 			Log.e("ThreadLoadAsyncTask", "Unable to load thread : not found");
 		} catch (JSONException e) {
 			exception = e;
 			e.printStackTrace();
-			ACRA.getErrorReporter().handleSilentException(e);
 		} catch (Exception e) {
 			exception = e;
 			e.printStackTrace();
-			ACRA.getErrorReporter().handleSilentException(e);
 		}
 
 		return success ? ret : null;
@@ -100,7 +97,7 @@ public class ThreadLoadAsyncTask extends AsyncTaskEx<String, Integer, SingleThre
 					}
 					PostsArrayAdapter adapter = (PostsArrayAdapter) lvPosts.getAdapter();
 					if (adapter == null)
-						lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread, board));
+						lvPosts.setAdapter(new PostsArrayAdapter(context, result.thread, board, thread));
 					else
 						adapter.update(result.thread);
 				}

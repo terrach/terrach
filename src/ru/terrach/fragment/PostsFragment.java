@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 public class PostsFragment extends Fragment implements WorkIsDoneListener {
 	private String board;
-	private String msg;
+	private String thread;
 	private Boolean reload = false;
 	private ArrayList<String> pics = new ArrayList<String>();
 	private ArrayList<String> thumbs = new ArrayList<String>();
@@ -36,23 +36,23 @@ public class PostsFragment extends Fragment implements WorkIsDoneListener {
 		return inflater.inflate(R.layout.f_posts, null);
 	}
 
-	public void loadPosts(String board, String msg) {
+	public void loadPosts(String board, String thread) {
 		this.board = board;
-		this.msg = msg;
+		this.thread = thread;
 	}
 
 	public void reload() {
 		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
 		pics.clear();
 		thumbs.clear();
-		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, msg);
+		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, thread);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ListView lvPosts = (ListView) getView().findViewById(R.id.lvPosts);
-		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, msg);
+		new ThreadLoadAsyncTask(getActivity(), this, lvPosts, pics, thumbs).execute(board, thread);
 		lvPosts.setFocusable(false);
 
 	}
@@ -66,7 +66,8 @@ public class PostsFragment extends Fragment implements WorkIsDoneListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.mi_post_gallery: {
-			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra("pics", pics).putExtra("thumbs", thumbs));
+			startActivity(new Intent(getActivity(), ThreadImagesGallery.class).putExtra(ThreadImagesGallery.PARAM_PICS, pics).putExtra(
+					ThreadImagesGallery.PARAM_THUMBS, thumbs));
 			return true;
 		}
 		case R.id.mi_post_reload: {
@@ -74,7 +75,9 @@ public class PostsFragment extends Fragment implements WorkIsDoneListener {
 			return true;
 		}
 		case R.id.mi_post_send: {
-			startActivityForResult(new Intent(getActivity(), NewPostActivity.class), 100);
+			startActivityForResult(
+					new Intent(getActivity(), NewPostActivity.class).putExtra(NewPostActivity.PARAM_BOARD, board).putExtra(
+							NewPostActivity.PARAM_THREAD, thread), 100);
 		}
 		default:
 			return super.onOptionsItemSelected(item);

@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class CaptchaLoadAsyncTask extends AsyncTaskEx<Void, Void, Boolean> {
-	private static String captchaURL = "makaba/captcha.fcgi";
+	private static String captchaURL = "/makaba/captcha.fcgi";
 	private YandexCaptchaService yandexCaptchaService = new YandexCaptchaService();
 	private String server;
 	private CaptchaResult result;

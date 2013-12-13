@@ -1,89 +1,95 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/svWrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <CheckBox
-        android:id="@+id/cbSage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"        
-        android:text="sage" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:text="Капча" />
+    android:fillViewport="true" >
 
     <LinearLayout
-        android:id="@+id/llCaptchaWrapper"
         android:layout_width="match_parent"
-        android:layout_height="100dip"
-        android:layout_margin="5dp"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/ivCaptchaImage"
+        <CheckBox
+            android:id="@+id/cbSage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="sage" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="Капча" />
+
+        <LinearLayout
+            android:id="@+id/llCaptchaWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_margin="5dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/ivCaptchaImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="0.89"
+                android:scaleType="fitXY"
+                android:src="@drawable/no_photo" />
+
+            <ImageButton
+                android:id="@+id/ibRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:onClick="refreshCaptcha"
+                android:src="@drawable/ic_menu_refresh" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtCaptcha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="Заголовок" />
+
+        <EditText
+            android:id="@+id/edtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="Сообщение" />
+
+        <EditText
+            android:id="@+id/edtPost"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="0.89"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_photo" />
-
-        <ImageButton
-            android:id="@+id/ibRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:onClick="refreshCaptcha"
-            android:src="@drawable/ic_menu_refresh" />
+            android:inputType="textMultiLine" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/edtCaptcha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:text="Заголовок" />
-
-    <EditText
-        android:id="@+id/edtTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:ems="10" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:text="Сообщение" />
-
-    <EditText
-        android:id="@+id/edtPost"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:ems="10"
-        android:inputType="textMultiLine" />
-
-</LinearLayout>
+</ScrollView>

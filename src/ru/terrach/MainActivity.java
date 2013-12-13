@@ -9,11 +9,13 @@ import java.util.Map;
 import ru.terrach.activity.MainActivityInterface;
 import ru.terrach.activity.component.PostHolder;
 import ru.terrach.activity.component.adapter.DrawerExpandableListAdapter;
+import ru.terrach.core.URLUtil;
 import ru.terrach.core.helper.RecentHelper;
 import ru.terrach.fragment.BoardsFragment;
 import ru.terrach.fragment.MainFragment;
 import ru.terrach.fragment.PostsFragment;
 import ru.terrach.fragment.ThreadsFragment;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -50,6 +52,12 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 	private enum MainFragments {
 		MAIN, BOARDS, THREADS, POSTS;
 	}
+
+	public static final String OPEN_EXTERNAL_OP = "external_op";
+	public static final String OPEN_EXTERNAL_URL = "external_url";
+	public static final int OPEN_BOARD = 0;
+	public static final int OPEN_THREAD = 1;
+	public static final int OPEN_IMAGE = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +114,23 @@ public class MainActivity extends ActionBarActivity implements MainActivityInter
 		});
 		tvCurrentFragment = (TextView) findViewById(R.id.tvCurrentFragment);
 		changeFragment(MainFragments.MAIN, null, null);
+		Intent intent = getIntent();
+		if (intent != null) {
+			String url = intent.getStringExtra(OPEN_EXTERNAL_URL);
+			switch (intent.getIntExtra(OPEN_EXTERNAL_OP, -1)) {
+			case OPEN_BOARD: {
+				loadBoard(url);
+			}
+				break;
+			case OPEN_THREAD: {
+				//loadThread(URLUtil.parseBoard(url), URLUtil.parseThread(url));
+			}
+				break;
+			case OPEN_IMAGE: {
+			}
+				break;
+			}
+		}
 	}
 
 	private void changeFragment(MainFragments fragment, String board, String msg) {

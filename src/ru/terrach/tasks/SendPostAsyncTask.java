@@ -14,6 +14,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import ru.terrach.R;
+import ru.terrach.constants.MakabaPostFields;
 import ru.terrach.core.AsyncTaskEx;
 import ru.terrach.core.PostBean;
 import ru.terrach.core.Utils;
@@ -24,6 +25,7 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 
 	private HttpPost httpPost;
 	private String server;
+	private MakabaPostFields makabaPostFields = MakabaPostFields.getDefault();
 
 	public SendPostAsyncTask(Context a) {
 		super(a);
@@ -32,13 +34,13 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 
 	@Override
 	protected void onCancelled() {
-
+		stopProgess();
 	}
 
 	@Override
 	protected Boolean doInBackground(PostBean... params) {
 		PostBean post = params[0];
-		httpPost = new HttpPost(server + "/" + post.getBoard() + "/wakaba.pl");
+		httpPost = new HttpPost(server + post.getBoard() + "wakaba.pl");
 		HttpClientParams.setRedirecting(httpPost.getParams(), false);
 		httpPost.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.RFC_2109);
 
@@ -49,29 +51,30 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 			MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			multipartEntity.addPart("task", new StringBody("post", utf));
 			multipartEntity.addPart("parent", new StringBody(post.getParent().toString(), utf));
-			multipartEntity.addPart("shampoo", new StringBody(post.getText(), utf));
+			multipartEntity.addPart(makabaPostFields.getComment(), new StringBody(post.getText(), utf));
 
 			if (!TextUtils.isEmpty(post.getCaptcha())) {
-				multipartEntity.addPart("captcha", new StringBody(post.getCaptcha(), utf));
-				multipartEntity.addPart("captcha_value_id_06", new StringBody(post.getCaptchaAnswer(), utf));
+				multipartEntity.addPart(makabaPostFields.getCaptchaKey(), new StringBody(post.getCaptcha(), utf));
+				multipartEntity.addPart(makabaPostFields.getCaptcha(), new StringBody(post.getCaptchaAnswer(), utf));
 			}
 
 			if (post.getSage()) {
-				multipartEntity.addPart("nabiki", new StringBody("awd", utf));
+				multipartEntity.addPart(makabaPostFields.getEmail(), new StringBody("sage", utf));
 			}
 			// if (entity.getAttachment() != null) {
-			// multipartEntity.addPart(fields.getFile(), new
+			// multipartEntity.addPart(makabaPostFields.getFile(), new
 			// FileBody(entity.getAttachment()));
 			// }
 			// if (entity.getVideo() != null) {
-			// multipartEntity.addPart(fields.getVideo(), new
+			// multipartEntity.addPart(makabaPostFields.getVideo(), new
 			// StringBody(entity.getVideo(), utf));
 			// }
 			if (post.getTitle() != null) {
-				multipartEntity.addPart("kasumi", new StringBody(post.getTitle(), utf));
+				multipartEntity.addPart(makabaPostFields.getSubject(), new StringBody(post.getTitle(), utf));
 			}
 			// if (!TextUtils.isEmpty(entity.getName())) {
-			// multipartEntity.addPart(fields.getName(), new
+			// multipartEntity.addPart(makabaPostFieldsmakabaPostFields.getName(),
+			// new
 			// StringBody(entity.getName(), utf));
 			// }
 			// Only for /po and /test
@@ -102,8 +105,7 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 			}
 
 			if (statusCode != 200) {
-				// throw new SendPostException(statusCode + " - " +
-				// response.getStatusLine().getReasonPhrase());
+				ACRA.getErrorReporter().handleException(new Exception(response.getStatusLine().getReasonPhrase()));
 			}
 
 			// Проверяю 200-response на наличие html-разметки с ошибкой
@@ -111,17 +113,19 @@ public class SendPostAsyncTask extends AsyncTaskEx<PostBean, Integer, Boolean> {
 			try {
 				responseText = Utils.convertStreamToString(response.getEntity().getContent());
 			} catch (Exception e) {
-				// throw new SendPostException(e.getMessage());
 				ACRA.getErrorReporter().handleSilentException(e);
 			}
 
 		} catch (Exception e) {
-			// MyLog.e(TAG, e);
-			// throw new
-			// SendPostException(this.mResources.getString(R.string.error_send_post));
 			ACRA.getErrorReporter().handleSilentException(e);
 		}
 
 		return false;
 	}
+
+	@Override
+	protected void onPreExecute() {
+		startProgress("", "Отсылка сообщения");
+	}
+
 }

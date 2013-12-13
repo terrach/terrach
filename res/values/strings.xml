@@ -7,7 +7,7 @@
     <string name="title_activity_new_post">NewPostActivity</string>
     <string name="drawable_open">открыть</string>
     <string name="drawable_close">закрыть</string>
-    <string name="server">http://2ch.hk/</string>
+    <string name="server">http://2ch.hk</string>
     <string name="wakaba">/wakaba.json</string>
     <string name="cache_dir">terrach</string>
     <string name="max_recent">max_recent</string>

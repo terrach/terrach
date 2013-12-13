@@ -19,14 +19,16 @@ public class ThreadImagesGallery extends Activity {
 
 	private GridView gv;
 	private ArrayList<String> pics = new ArrayList<String>();
+	public static final String PARAM_THUMBS = "thumbs";
+	public static final String PARAM_PICS = "pics";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_thread_gallery);
 		gv = (GridView) findViewById(R.id.gvThreadGallery);
-		pics = getIntent().getStringArrayListExtra("pics");
-		gv.setAdapter(new ThreadGalleryAdapter(this, getIntent().getStringArrayListExtra("thumbs"), pics));
+		pics = getIntent().getStringArrayListExtra(PARAM_PICS);
+		gv.setAdapter(new ThreadGalleryAdapter(this, getIntent().getStringArrayListExtra(PARAM_THUMBS), pics));
 		setTitle("Галерея");
 		gv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
